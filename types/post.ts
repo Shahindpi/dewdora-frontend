@@ -16,8 +16,13 @@ export interface Post {
   slug: string;
 
   excerpt?: string;
+  content?: string;
+  category_id?: number | null;
+  post_type?: "article" | "review" | "comparison" | "tutorial" | "news";
+  allow_comments?: boolean;
 
   featured_image?: string;
+  featured_image_path?: string | null;
 
   status: "draft" | "published";
 
@@ -34,7 +39,6 @@ export interface Post {
 
 export interface PaginatedPosts {
   data: Post[];
-
   meta: {
     current_page: number;
     last_page: number;

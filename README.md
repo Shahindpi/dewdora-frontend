@@ -1,36 +1,11 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dewdora frontend
 
-## Getting Started
+Next.js 16 frontend for the Dewdora Laravel API in `../backend`. The public site provides articles, products, categories, tags, brands, search, comments, contact and newsletter signup. The authenticated admin provides dashboard, posts, categories, tags, affiliate products, brands, networks, media, comment/contact moderation, subscribers, profile and site settings.
 
-First, run the development server:
+Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_API_URL` to the **versioned API root** (`/api/v1`), not `/api` or `/api/v1/public`. Set `NEXT_PUBLIC_STORAGE_URL` to the Laravel `/storage` URL. Laravel must allow the frontend origin in `CORS_ALLOWED_ORIGINS` and expose uploaded files with `php artisan storage:link`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Run `npm ci`, `npm run dev`, `npx tsc --noEmit`, `npm run lint`, and `npm run build`. The public pages request current content from Laravel at render time; publish the Laravel API at an address reachable from the Next.js server. If necessary, configure server-only `API_URL` separately. Admin authentication uses a Sanctum bearer token stored in the browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Troubleshooting a homepage API 500
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The homepage fetches `${API_URL || NEXT_PUBLIC_API_URL}/public/homepage` from Laravel on the server. A 500 is an upstream Laravel failure, not a Next.js typed-route or rendering error. The frontend displays a retry state; it cannot repair a failed database query. Request `/api/v1/public/homepage` directly, inspect `backend/storage/logs/laravel.log`, and run `php artisan migrate:status` in the deployed `backend/` directory. This branch adds the `affiliate_events.is_demo` column in migration `2026_09_20_000000_mark_demo_affiliate_events.php`, which the homepage popularity query requires. Apply pending migrations with `php artisan migrate --force` (do not use `migrate:fresh` on real data), then run `php artisan optimize:clear` and retry the endpoint. Also verify `API_URL`/`NEXT_PUBLIC_API_URL` points to the correct deployed Laravel instance and database. A current Laravel exception log is required to identify other 500 causes.

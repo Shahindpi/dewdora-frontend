@@ -1,4 +1,5 @@
 "use client";
+import { routes } from "@/lib/routes";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,12 +15,11 @@ import {
   MessageSquare,
   Mail,
   Eye,
-  HardDrive,
 } from "lucide-react";
 
 import {
-  getDashboardAnalytics,
   getDashboardOverview,
+  getDashboardPopularPosts,
 } from "@/services/dashboard";
 
 export default function DashboardPage() {
@@ -28,9 +28,9 @@ export default function DashboardPage() {
     queryFn: getDashboardOverview,
   });
 
-  const { data: analytics } = useQuery({
-    queryKey: ["dashboard-analytics"],
-    queryFn: getDashboardAnalytics,
+  const { data: popularPosts } = useQuery({
+    queryKey: ["dashboard-popular-posts"],
+    queryFn: getDashboardPopularPosts,
   });
 
   if (isLoading || !overview) {
@@ -66,6 +66,7 @@ export default function DashboardPage() {
           value={overview.statistics.posts}
           icon={FileText}
           color="#2563EB"
+          href={routes.admin.posts.index}
         />
 
         <StatCard
@@ -73,6 +74,7 @@ export default function DashboardPage() {
           value={overview.statistics.categories}
           icon={FolderTree}
           color="#EA580C"
+          href={routes.admin.categories}
         />
 
         <StatCard
@@ -80,6 +82,7 @@ export default function DashboardPage() {
           value={overview.statistics.products}
           icon={ShoppingBag}
           color="#16A34A"
+          href={routes.admin.products.index}
         />
 
         <StatCard
@@ -87,6 +90,7 @@ export default function DashboardPage() {
           value={overview.statistics.users}
           icon={Users}
           color="#7C3AED"
+          href={routes.admin.users.index}
         />
 
         <StatCard
@@ -94,6 +98,7 @@ export default function DashboardPage() {
           value={overview.statistics.tags}
           icon={MessageSquare}
           color="#DC2626"
+          href={routes.admin.tags}
         />
 
         <StatCard
@@ -101,6 +106,7 @@ export default function DashboardPage() {
           value={overview.statistics.brands}
           icon={ShoppingBag}
           color="#0891B2"
+          href={routes.admin.brands}
         />
 
         <StatCard
@@ -108,6 +114,7 @@ export default function DashboardPage() {
           value={overview.statistics.affiliate_networks}
           icon={Mail}
           color="#0F766E"
+          href={routes.admin.networks}
         />
 
         <StatCard
@@ -115,11 +122,12 @@ export default function DashboardPage() {
           value={overview.statistics.published_posts}
           icon={Eye}
           color="#64748B"
+          href={routes.admin.posts.index}
         />
       </div>
 
-      {analytics?.popular_posts && (
-        <PopularPosts posts={analytics.popular_posts} />
+      {popularPosts?.length && (
+        <PopularPosts posts={popularPosts} />
       )}
     </main>
   );

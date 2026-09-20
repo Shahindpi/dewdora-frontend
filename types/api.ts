@@ -1,9 +1,3 @@
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
-
 export interface PaginationMeta {
   current_page: number;
   last_page: number;
@@ -11,11 +5,11 @@ export interface PaginationMeta {
   total: number;
 }
 
-export interface PaginatedResponse<T> {
+export interface ApiResponse<T> {
   success: boolean;
-  message: string;
-
-  data: T[];
-
-  meta: PaginationMeta;
+  message?: string;
+  data: T;
+  meta?: PaginationMeta;
 }
+
+export type PaginatedResponse<T> = ApiResponse<T[]> & { meta: PaginationMeta };
