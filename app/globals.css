@@ -105,6 +105,26 @@ button:not(:disabled), summary, select { cursor: pointer; }
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+    /* Brand palette */
+  --dewdora-green: #16805c;
+  --dewdora-green-dark: #106b4c;
+  --dewdora-green-light: #eaf7f1;
+
+  --dewdora-black: #171a19;
+  --dewdora-black-soft: #252a28;
+
+  /* Semantic colors */
+  --color-primary: var(--dewdora-green);
+  --color-primary-hover: var(--dewdora-green-dark);
+
+  --color-background: #f8faf9;
+  --color-surface: #ffffff;
+
+  --color-heading: var(--dewdora-black);
+  --color-text: #4b5651;
+  --color-muted: #718079;
+
+  --color-border: #e2e8e5;
 }
 
 .dark {

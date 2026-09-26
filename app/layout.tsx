@@ -7,9 +7,15 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { ReduxProvider } from "@/providers/redux-provider";
+import { Inter } from "next/font/google";
 
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -18,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={inter.className}>
         <ThemeProvider>
           <ReduxProvider>
             <QueryProvider>
